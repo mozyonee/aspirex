@@ -8,7 +8,7 @@ const basename = path.basename(__filename);
 const db = {};
 dotenv.config();
 
-const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USER, process.env.DATABASE_USER, {
+const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USER, process.env.DATABASE_PASS, {
 	host: process.env.DATABASE_HOST,
 	dialect: "mysql",
 	dialectModule: require('mysql2'),
