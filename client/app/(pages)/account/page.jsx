@@ -131,7 +131,7 @@ const Account = () => {
 										</label>
 									</div>
 								</div>
-								<legend>What’s your primary interest in VR?</legend>
+								<legend>What is your primary interest in VR?</legend>
 								<div className='flex flex-col gap-2'>
 									<ErrorMessage name='useType' component='span' className='text-neutral-400 mb-1' />
 									<div className='flex gap-5'>
@@ -177,7 +177,7 @@ const Account = () => {
 								</>)}
 
 								{values.useType === 'professional' && (<>
-									<legend>What's your professional use case?</legend>
+									<legend>What is your professional use case?</legend>
 									<div className='flex flex-col gap-2'>
 										<ErrorMessage name='useCase2' component='span' className='text-neutral-400' />
 										<div className='flex gap-5'>
