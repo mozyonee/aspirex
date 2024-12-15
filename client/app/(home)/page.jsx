@@ -42,7 +42,7 @@ const Home = () => {
 				<h2 className='font-bold text-5xl mb-20'>Our <span className='text-yellow-300'>Roadmap</span></h2>
 				<ul className='text-xl list-none list-inside marker:font-bold'>
 				<li>
-						<b>VR Headset Development and Pre-orders</b><p>We’re focused on developing the latest in VR headset technology. You can pre-order your headset with no upfront payment and secure your place in the future of immersive VR experiences.</p>
+						<b>VR Headset Development and Pre-orders</b><p>We are focused on developing the latest in VR headset technology. You can pre-order your headset with no upfront payment and secure your place in the future of immersive VR experiences.</p>
 						<Image src='/arrow.png' alt='then' height='51' width='16' className='m-auto my-16' />
 					</li>
 					<li>
@@ -58,7 +58,7 @@ const Home = () => {
 						<Image src='/arrow.png' alt='then' height='51' width='16' className='m-auto my-16' />
 					</li>
 					<li>
-						<b>VR Head and Body Set 2.0 Development</b><p>We’re always pushing the boundaries of innovation. We're working on the next generation of VR head and body sets, designed to provide even more immersive and realistic experiences.</p>
+						<b>VR Head and Body Set 2.0 Development</b><p>We are always pushing the boundaries of innovation. We are working on the next generation of VR head and body sets, designed to provide even more immersive and realistic experiences.</p>
 					</li>
 				</ul>
 				<div className='mt-20 text-neutral-300 max-w-80 mx-auto'>
