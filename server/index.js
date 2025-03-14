@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
 				console.error('Error creating order:', err);
 			});
 	});
-	  
+
 	socket.on('updateOrder', (data) => {
 		api.patch('/orders', data)
 			.then(response => io.emit('updateOrder', response.data));
@@ -104,7 +104,7 @@ io.on('connection', (socket) => {
 			parse_mode: 'HTML'
 		};
 		const token = process.env.BOT_TOKEN;
-		axios.post(`https://api.telegram.org/bot${token}/sendMessage`, data);	
+		axios.post(`https://api.telegram.org/bot${token}/sendMessage`, data);
 	});
 });
 
@@ -141,7 +141,7 @@ app.post('/live', async (req, res) => {
 	const userDB = await users.findOne({ where: { email: email } });
 	if (userDB) await userDB.update({ live: 1 });
 	else await users.create({ email: email, live: 1 });
-    
+
 	io.emit('enableLive', email);
 
 	res.status(200);
