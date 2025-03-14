@@ -19,10 +19,10 @@ const Delivery = ({ setDeliveryParent, headset, amount, user, setUser, authState
 		return () => {
 			window.removeEventListener("mousedown", handleOutSideClick);
 		};
-	}, [popUp]);
+	}, [popUp, setDeliveryParent]);
 
-	
-	
+
+
 	const onDelivery = (data) => {
 		if (authState) {
 			setUser({ ...user, name: data.name, number: data.number, address: data.address });
@@ -31,8 +31,8 @@ const Delivery = ({ setDeliveryParent, headset, amount, user, setUser, authState
 
 		data.amount = amount;
 		data.headset = headset;
-		if(headset === 1) data.price =  amount * 1069;
-		else if(headset === 2) data.price =  amount * 2069;
+		if (headset === 1) data.price = amount * 1069;
+		else if (headset === 2) data.price = amount * 2069;
 
 		socket.emit('createOrder', data);
 
@@ -57,7 +57,7 @@ const Delivery = ({ setDeliveryParent, headset, amount, user, setUser, authState
 		<main className='text-center m-32 gap-24 grid grid-cols-3' >
 			<section className='w-full h-full fixed bg-neutral-950 bg-opacity-75 top-0 left-0 bottom-0 right-0 flex items-center justify-center backdrop-blur-md'>
 				<div ref={popUp} className='bg-neutral-800 text-white text-3xl px-14 py-20 min-w-96 rounded-2xl flex flex-col gap-10 items-center mx-4'>
-					<Image src='/logotype.png' alt='Web Threesome' width={100} height={91.38} />
+					<Image src='/logotype.png' alt='AspireX' width={100} height={91.38} />
 					<h2 className='font-bold text-3xl'>Enter your data</h2>
 					<Formik initialValues={initialValuesDelivery} onSubmit={onDelivery} validationSchema={validationSchemaDelivery}>
 						<Form className='flex flex-col gap-5 text-xl'>

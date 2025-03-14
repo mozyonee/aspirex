@@ -26,10 +26,10 @@ const Order = ({ params }) => {
 	const { id } = params;
 	const router = useRouter();
 	const coins = [['btc', 'Bitcoin (Default)'], ['lbtc', 'Bitcoin (Lightning)'], ['eth', 'Ethereum (ERC20)'], ['bnb', 'Binance (BEP20)']];
-	
+
 	useEffect(() => {
 		socket.on('updateOrder', (data) => {
-			setUpdated(!updated);
+			setUpdated(upd => !upd);
 		});
 		socket.on('getOrder', (data) => {
 			if (data.status === 'pending' || data.status === 'complete') {
@@ -48,12 +48,12 @@ const Order = ({ params }) => {
 		return () => {
 			socket.off('updateOrder');
 			socket.off('getOrder');
-		}
-	}, []);
-	
+		};
+	}, [id]);
+
 	useEffect(() => {
 		socket.emit('getOrder', id);
-	}, [updated]);
+	}, [id, updated]);
 
 	useEffect(() => {
 		let intervalId;
@@ -68,7 +68,7 @@ const Order = ({ params }) => {
 						setOrder([]);
 						router.push('/');
 					}
-					if (prevTimeLeft % 30 === 0) setUpdated(!updated);
+					if (prevTimeLeft % 30 === 0) setUpdated(upd => !upd);
 
 					return prevTimeLeft - 1;
 				});
@@ -77,13 +77,13 @@ const Order = ({ params }) => {
 		return () => {
 			clearInterval(intervalId);
 		};
-	}, [payment]);
+	}, [payment, id, router]);
 
 	const validationSchemaSetting = Yup.object().shape({
 		coin: Yup.string().required('This field is required')
 	});
 	const onSetting = (data) => {
-		
+
 		setBlock(true);
 
 		let currencyID = {

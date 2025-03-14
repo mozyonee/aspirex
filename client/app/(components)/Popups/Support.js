@@ -16,15 +16,23 @@ const Support = ({ setSupportFormParent, user, setUser, authState }) => {
 	const messagesEndRef = useRef(null);
 	const popUp = useRef(null);
 
-	const questions = ['Default question 1', 'Default question 2', 'Default question 3'];
-	const answers = ['Default answer 1', 'Default answer 2', 'Default answer 3'];
+	const questions = [
+		'How do I set up my VR headset?',
+		'Do you offer international shipping?',
+		'Can I use the VR headset with my PlayStation?'
+	];
+	const answers = [
+		'Setting up your VR headset is simple. Just follow the step-by-step instructions in the user manual included with your device or check out our setup guide on the website.',
+		'Yes, we ship our VR headsets worldwide! You can check the shipping details at checkout or contact our support team for more information.',
+		'Yes, we have PlayStation-compatible VR headsets like the AspireX V2.0" that work seamlessly with your PS4 or PS5.'
+	];
 
 	useEffect(() => {
 		if (authState) {
 			setName(user.name);
 			setEmail(user.email);
 		}
-	}, [user]);
+	}, [user, authState]);
 
 	useEffect(() => {
 		socket.on('receiveTelegram', (message) => {
@@ -50,7 +58,7 @@ const Support = ({ setSupportFormParent, user, setUser, authState }) => {
 		return () => {
 			window.removeEventListener("mousedown", handleOutSideClick);
 		};
-	}, [popUp]);
+	}, [popUp, supportChat, supportForm]);
 
 	const initialValuesSupportForm = {
 		name: user.name ? user.name : '',
@@ -89,10 +97,10 @@ const Support = ({ setSupportFormParent, user, setUser, authState }) => {
 
 		setMessages((prevMessages) => [...prevMessages, message]);
 
-		if(user.live) socket.emit('sendTelegram', message);
+		if (user.live) socket.emit('sendTelegram', message);
 		else {
 			const answer = questions.findIndex(question => message.text === question);
-			if(answer === -1) setMessages((prevMessages) => [...prevMessages, { type: 'bot', text: 'Did you mean on of the following?' }]);
+			if (answer === -1) setMessages((prevMessages) => [...prevMessages, { type: 'bot', text: 'Did you mean on of the following?' }]);
 			else setMessages((prevMessages) => [...prevMessages, { type: 'agent', text: answers[answer] }]);
 		}
 	};
@@ -110,7 +118,7 @@ const Support = ({ setSupportFormParent, user, setUser, authState }) => {
 			<section className='w-full h-full fixed bg-neutral-950 bg-opacity-75 top-0 left-0 bottom-0 right-0 flex items-center justify-center backdrop-blur-md'>
 				<div ref={popUp} className='bg-neutral-800 text-white flex flex-col items-center gap-10 text-lg p-14 rounded-2xl max-w-lg mx-4'>
 					{supportForm && (<>
-						<Image src='/logotype.png' alt='Web Threesome' width={100} height={91.38} />
+						<Image src='/logotype.png' alt='AspireX' width={100} height={91.38} />
 						<h2 className='font-semibold text-3xl'>Do you need help?</h2>
 						<Formik initialValues={initialValuesSupportForm} onSubmit={(e) => onSupportForm(e)} validationSchema={validationSchemaSupportForm}>
 							<Form className='flex flex-col gap-3 mx-auto text-black'>
@@ -135,11 +143,11 @@ const Support = ({ setSupportFormParent, user, setUser, authState }) => {
 								</li>
 								{messages.map((message, index) => (
 									<li key={index} className={`${message.type === 'user' ? 'items-end' : 'items-start'} flex flex-col mt-3`}>
-										<p className={`${message.type === 'user' ? 'bg-yellow-300 text-neutral-950' : 'bg-neutral-800'} max-w-fit py-3 px-6 rounded-xl`}>
+										<p className={`${message.type === 'user' ? 'bg-yellow-300 text-neutral-950 text-right' : 'bg-neutral-800 text-left'} max-w-fit py-3 px-6 rounded-xl`}>
 											{message.text}
 										</p>
 										{message.type === 'bot' && index + 1 === messages.length && questions.map((text, idx) => (
-											<button key={idx} className={`bg-neutral-400 max-w-fit py-3 px-6 rounded-xl mt-1`} onClick={() => {
+											<button key={idx} className={`bg-neutral-400 text-left max-w-fit py-3 px-6 rounded-xl mt-1`} onClick={() => {
 												onSupportChat({ message: text });
 											}}>
 												{text}

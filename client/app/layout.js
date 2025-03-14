@@ -5,15 +5,15 @@ import Header from './(components)/Header';
 import Footer from './(components)/Footer';
 import { AuthContext } from './(helpers)/authContext';
 import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import socket from './(helpers)/socket';
 import Restrict from './(components)/Popups/Restrict';
+import SearchParamsHandler from './(components)/SearchParamsHandler'; // Importing a child component
 
 export default function RootLayout({ children }) {
 	const [user, setUser] = useState([]);
 	const [authState, setAuthState] = useState(false);
 	const [visited, setVisited] = useState(false);
-	const searchParams = useSearchParams();
 	const router = useRouter();
 
 	useEffect(() => {
@@ -48,21 +48,12 @@ export default function RootLayout({ children }) {
 			socket.off('verifyToken');
 			socket.off('verifyUser');
 		};
-	}, [user]);
+	}, []);
 
 	useEffect(() => {
-		if (visited || localStorage.getItem('visited')) {
+		if (!localStorage.getItem('visited')) {
 			localStorage.setItem('visited', true);
-			setVisited(true);
 		}
-	}, [visited]);
-
-	useEffect(() => {
-		const token = searchParams.get('token');
-
-		if (token && !authState) {
-			socket.emit('verifyToken', token);
-		} else GetAuthState();
 	}, []);
 
 	const GetAuthState = () => {
@@ -77,8 +68,10 @@ export default function RootLayout({ children }) {
 						<>
 							<Header />
 							<div className='px-10 max-w-7xl mx-auto'>
-								{/* Wrap children in Suspense */}
+								{/* Wrap the entire layout with Suspense */}
 								<Suspense fallback={<div>Loading...</div>}>
+									{/* Moved the searchParams logic into a child component */}
+									<SearchParamsHandler />
 									{children}
 								</Suspense>
 							</div>

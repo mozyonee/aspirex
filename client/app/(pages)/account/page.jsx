@@ -50,7 +50,7 @@ const Account = () => {
 	useEffect(() => {
 		if (authState) socket.emit('getOrders', user.email);
 		setUserType(user.userType);
-	}, [user]);
+	}, [user, authState]);
 
 	const validationSchemaThree = Yup.object().shape({
 		userType: Yup.string().required('This field is required'),
@@ -215,7 +215,7 @@ const Account = () => {
 					<label htmlFor="three" className="flex items-center text-sm max-md:justify-center cursor-pointer hover:brightness-75">
 						<Checkbox id="three" onChange={toggleInvites} defaultChecked={user.invites === 'Enabled' ? true : false}
 							disableRipple={true} sx={{ color: grey[400], '&.Mui-checked': { color: grey[400] } }} className='-z-10' />
-						<span className='text-left cursor-pointer text-yellow-300'>Allow user invites for a threesome</span>
+						<span className='text-left cursor-pointer text-yellow-300'>Allow user invites to parties</span>
 					</label>
 					<div className='bg-yellow-950 p-5 rounded-xl' style={{ background: `center / cover no-repeat url('/stars.png')` }}>
 						<h2 className='font-semibold text-2xl mb-5'>Experiences</h2>

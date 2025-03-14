@@ -16,7 +16,7 @@ const Wallet = ({ setWalletParent }) => {
 		return () => {
 			window.removeEventListener("mousedown", handleOutSideClick);
 		};
-	}, [popUp]);
+	}, [popUp, setWalletParent]);
 
 	return (
 		<main className='text-center m-32 gap-24 grid grid-cols-3' >

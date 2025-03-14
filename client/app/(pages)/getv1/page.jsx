@@ -24,7 +24,7 @@ const Order = () => {
 		return () => {
 			socket.off('getOrderNumber');
 		};
-	}, [user]);
+	});
 
 	useEffect(() => {
 		const placeholderRef = document.getElementById('hide');
