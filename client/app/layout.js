@@ -4,7 +4,7 @@ import './globals.css';
 import Header from './(components)/Header';
 import Footer from './(components)/Footer';
 import { AuthContext } from './(helpers)/authContext';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import socket from './(helpers)/socket';
 import Restrict from './(components)/Popups/Restrict';
@@ -18,10 +18,10 @@ export default function RootLayout({ children }) {
 
 	useEffect(() => {
 		socket.on('enableLive', (liveEmail) => {
-			if(liveEmail === user.email) setUser({ ...user, live: 1 });
+			if (liveEmail === user.email) setUser({ ...user, live: 1 });
 		});
 		socket.on('banUser', (banEmail) => {
-			if(banEmail === user.email) {
+			if (banEmail === user.email) {
 				localStorage.removeItem('sID');
 				setAuthState(false);
 				setUser([]);
@@ -47,11 +47,11 @@ export default function RootLayout({ children }) {
 			socket.off('banUser');
 			socket.off('verifyToken');
 			socket.off('verifyUser');
-		}
+		};
 	}, [user]);
 
 	useEffect(() => {
-		if(visited || localStorage.getItem('visited')) {
+		if (visited || localStorage.getItem('visited')) {
 			localStorage.setItem('visited', true);
 			setVisited(true);
 		}
@@ -73,13 +73,20 @@ export default function RootLayout({ children }) {
 		<html lang='en'>
 			<body className='relative bg-neutral-950 font-sans'>
 				<AuthContext.Provider value={{ user, setUser, authState, setAuthState }}>
-					{visited ? (<>
-						<Header />
-						<div className='px-10 max-w-7xl mx-auto'>
-							{children}
-						</div>
-						<Footer />
-					</>) : <Restrict setVisited={setVisited} />}
+					{visited ? (
+						<>
+							<Header />
+							<div className='px-10 max-w-7xl mx-auto'>
+								{/* Wrap children in Suspense */}
+								<Suspense fallback={<div>Loading...</div>}>
+									{children}
+								</Suspense>
+							</div>
+							<Footer />
+						</>
+					) : (
+						<Restrict setVisited={setVisited} />
+					)}
 				</AuthContext.Provider>
 			</body>
 		</html>
